@@ -2,13 +2,16 @@
 import os
 import random
 import discord
-
-
+import argparse
 from discord.ext import commands
-from dotenv import load_dotenv
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-t', '--token', dest = 'token', help = "If you don't have the token please ask Eran to send it to you")
+    parser.add_argument('-g', '--guild_name', dest = 'guild', default = "Dojo bots lab")
+    return parser.parse_args()
+
+parsed_args = parse_arguments()
 
 bot = commands.Bot(command_prefix='!')
 
@@ -52,4 +55,4 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CheckFailure):
         await ctx.send('You do not have the correct role for this command.')
 
-bot.run(TOKEN)
+bot.run(parsed_args.token)
