@@ -2,41 +2,34 @@
 import os
 import discord
 import random
-from dotenv import load_dotenv
-
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD1 = os.getenv('DISCORD_GUILD1')
-GUILD2 = os.getenv('DISCORD_GUILD2')
+import argparse
 
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
 
-guilds = []
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-t', '--token', dest = 'token', help = "If you don't have the token please ask Eran to send it to you")
+    parser.add_argument('-g', '--guild_name', dest = 'guild', default = "Dojo bots lab")
+    return parser.parse_args()
+
+parsed_args = parse_arguments()
+#
 @client.event
 async def on_ready():
-    guilds.append(discord.utils.get(client.guilds, name = GUILD1))
-    guilds.append(discord.utils.get(client.guilds, name = GUILD2))
+    guild = discord.utils.get(client.guilds, name = parsed_args.guild)
+    print(f'\n{client.user} is connected to {guild.name} (id: {guild.id})')
 
-    
-    print(
-        f'\n{client.user} is connected to the following guilds:\n'
-        f'1) {guilds[0].name} (id: {guilds[0].id})\n2) {guilds[1].name} (id: {guilds[1].id})\n'
-    )
-
-    members1 = '\n - '.join([member.name for member in guilds[0].members])
-    print(f'Guild1 Members:\n - {members1}')
-
-    members2 = '\n - '.join([member.name for member in guilds[1].members])
-    print(f'\nGuild2 Members:\n - {members2}')
+    guild_members =  '\n - '.join([member.name for member in guild.members])
+    print(f'Guild Members:\n - {guild_members}')
 
 @client.event
 async def on_member_join(member):
-	await member.create_dm()
-	await member.dm_channel.send(
-		f'Hi {member.name}, welcome to my Discord server!'
-	)
+    await member.create_dm()
+    await member.dm_channel.send(
+        f'Hi {member.name}, welcome to my Discord server!'
+    )
 
 @client.event
 async def on_message(message):
@@ -56,14 +49,14 @@ async def on_message(message):
         response = random.choice(brooklyn_99_quotes)
         await message.channel.send(response)
     elif message.content == 'raise-exception':
-    	raise discord.DiscordException
+        raise discord.DiscordException
 
 @client.event
 async def on_error(event, *args, **kwargs):
-	with open('err.log', 'a') as f:
-		if event == 'on_message':
-			f.write(f'Unhandled message: {args[0]}\n')
-		else:
-			raise
+    with open('err.log', 'a') as f:
+        if event == 'on_message':
+            f.write(f'Unhandled message: {args[0]}\n')
+        else:
+            raise
 
-client.run(TOKEN)
+client.run(parsed_args.token)
