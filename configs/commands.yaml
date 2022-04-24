@@ -1,0 +1,5 @@
+meetings:
+  save_meeting_summary:
+    command: meeting_summary
+    help: Saves the mentoring meeting summary🤖.
+    # replies:

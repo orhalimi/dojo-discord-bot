@@ -4,3 +4,4 @@ python-dotenv==0.20.0
 sqlparse==0.4.2
 discord==1.7.3
 discord.py==1.7.3
+pyyaml==6.0
