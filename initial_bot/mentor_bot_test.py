@@ -19,47 +19,51 @@ def parse_arguments():
 
 
 def main():
-    # parsed_args = parse_arguments()
-    # if parsed_args.token == None:
-    #     print("Please try again, but this time enter a token as an argument")
-    #     sys.exit()
+    parsed_args = parse_arguments()
+    if parsed_args.token == None:
+        print("Please try again, but this time enter a token as an argument")
+        sys.exit()
 
     intents = discord.Intents.all()
-    discord.member = True
     bot = commands.Bot(command_prefix='!', intents=intents)
 
     @bot.event
     async def on_ready():
         print(f'{bot.user.name} has connected to Discord!')
+        print('//////////////////')
 
     @bot.command(name='private')
-    async def make_channel(ctx, member: discord.Member, member1: discord.Member, member2: discord.Member, room_name):
-        author = ctx.author
-        if author != guild.owner:
-            ctx.send(
-                f'{author} You are not the server owner, only the server owner can perform this request.')
+    @commands.has_role('admin')
+    async def make_private_channel(ctx, member1: discord.Member, member2: discord.Member, member3: discord.Member, room_name: str = None):
+        '''
+        Takes 4 parameters: 3 members and a room name.
+        Creates a private room with the room name and addes the members to that room.
+        Room name must not already exist in the server.
+        '''
+        if room_name == None:
+            await ctx.send(f'Room name is empty, please add a room name to the command (after the last member to the be added to the room')
+            return
         else:
             guild = ctx.guild
             overwrites = {
                 guild.default_role: discord.PermissionOverwrite(read_messages=False),
-                member: discord.PermissionOverwrite(read_messages=True),
+                member1: discord.PermissionOverwrite(read_messages=True),
                 guild.me: discord.PermissionOverwrite(read_messages=True),
                 member1: discord.PermissionOverwrite(read_messages=True),
-                member2: discord.PermissionOverwrite(read_messages=True),
+                member3: discord.PermissionOverwrite(read_messages=True),
             }
-        channel = await guild.create_text_channel(room_name, overwrites=overwrites)
-        print(f'Created a room called {room_name}')
-        await ctx.send(f'Creating a channel called {room_name} and adding {member.name}, {member1.name} and {member2.name} to it.')
+            existing_channel = discord.utils.get(
+                guild.channels, name=room_name)
+            if not existing_channel:
+                channel = await guild.create_text_channel(room_name, overwrites=overwrites)
+                print(f'Created a room called {room_name}')
+                await ctx.send(f'Creating a channel called {room_name} and adding {member1.name}, {member2.name} and {member3.name} to it.')
+            else:
+                await ctx.send(f'A room with the name: {room_name} already exists. Please choose a different name.')
 
-    @bot.command(name="test", help="Checks name of user with the name given by command")
-    async def create_private_room(ctx, member1, member2, room_name):
-        await create_channel(ctx, room_name)
-        await ctx.send(f'Creating a channel called {room_name} and adding {member1} and {member2} to it.')
-
+    make_private_channel()
 
 # Send a gretting to members upon joining the server
-
-
     @bot.event
     async def on_member_join(member):
         await member.create_dm()
@@ -92,28 +96,12 @@ def main():
         ]
         await ctx.send(', '.join(dice))
 
-    # Create a new channel in the server
-    # The channel's name is received by the caller as an argument
-    # The caller must have an admin role
-    @bot.command(name='create-channel')
-    @commands.has_role('admin')
-    async def create_channel(ctx, channel_name=None):
-        if channel_name == None:
-            await ctx.send("Please add the channel name as an argument")
-        else:
-            guild = ctx.guild
-            existing_channel = discord.utils.get(
-                guild.channels, name=channel_name)
-            if not existing_channel:
-                await ctx.send(f'Creating a new channel: {channel_name}')
-                await guild.create_text_channel(channel_name)
-
     @bot.event
     async def on_command_error(ctx, error):
         if isinstance(error, commands.errors.CheckFailure):
             await ctx.send('You do not have the correct role for this command.')
 
-    bot.run("OTU5NDM3MDkwMDcwODgwMjg2.Ykb3aw.bYzL45_BqfOO4UIFxRKfsVB5IeE")
+    bot.run(parsed_args.token)
 
 
 if __name__ == "__main__":
