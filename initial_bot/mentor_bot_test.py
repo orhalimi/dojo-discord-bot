@@ -55,7 +55,7 @@ def main():
             existing_channel = discord.utils.get(
                 guild.channels, name=room_name)
             if not existing_channel:
-                channel = await guild.create_text_channel(room_name, overwrites=overwrites)
+                channel = await guild.create_text_channel(room_name=room_name, overwrites=overwrites)
                 print(f'Created a room called {room_name}')
                 await ctx.send(f'Creating a channel called {room_name} and adding {member1.name}, {member2.name} and {member3.name} to it.')
             else:
