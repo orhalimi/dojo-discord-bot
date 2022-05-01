@@ -25,7 +25,7 @@ def main():
         sys.exit()
 
     intents = discord.Intents.all()
-    bot = commands.Bot(command_prefix='!', intents=intents)
+    bot = commands.Bot(command_prefix = '!', intents = intents)
 
     @bot.event
     async def on_ready():
@@ -65,9 +65,8 @@ def main():
                 await ctx.send(f'A room with the name: {room_name} already exists. Please choose a different name.')
 
 
-# Send a gretting to members upon joining the server
-
-    @ bot.event
+    # Send a gretting to members upon joining the server
+    @bot.event
     async def on_member_join(member):
         await member.create_dm()
         await member.dm_channel.send(
@@ -75,7 +74,7 @@ def main():
         )
 
     # Reply to a !99 message with a random Peralta quote
-    @ bot.command(name='99', help='Responds with a random quote from Brooklyn 99')
+    @bot.command(name='99', help='Responds with a random quote from Brooklyn 99')
     async def nine_nine(ctx):
         brooklyn_99_quotes = [
             'I\'m the human form of the 💯 emoji.',
@@ -91,7 +90,7 @@ def main():
 
     # A !roll_dice message should be accompanied with 2 numbers - the 1st for the number of dice and the 2nd for the number of sides each die has
     # Roll the dice and return the sum of random numvers received
-    @ bot.command(name='roll_dice', help='Simulates rolling dice.')
+    @bot.command(name='roll_dice', help='Simulates rolling dice.')
     async def roll(ctx, number_of_dice: int, number_of_sides: int):
         dice = [
             str(random.choice(range(1, number_of_sides + 1)))
@@ -99,7 +98,7 @@ def main():
         ]
         await ctx.send(', '.join(dice))
 
-    @ bot.event
+    @bot.event
     async def on_command_error(ctx, error):
         if isinstance(error, commands.errors.CheckFailure):
             await ctx.send('You do not have the correct role for this command.')
