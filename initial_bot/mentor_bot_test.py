@@ -25,7 +25,7 @@ def main():
         sys.exit()
 
     intents = discord.Intents.all()
-    bot = commands.Bot(command_prefix = '!', intents = intents)
+    bot = commands.Bot(command_prefix = '!', intents = intents, case_insensitive=True)
 
     @bot.event
     async def on_ready():
@@ -72,6 +72,22 @@ def main():
         await member.dm_channel.send(
             f'Hi {member.name}, welcome to my Discord server!'
         )
+
+    #save messages that were sent in private mentoring rooms
+    badwords = ['bad', 'words', 'here']
+    @bot.event
+    async def on_message(message):
+        for i in badwords:
+            if i in message.content:
+                await message.channel.send(f"{message.author.mention} please dont")
+                bot.dispatch('profanity', message, i)
+        await bot.process_commands(message)
+
+    @bot.event
+    async def on_profanity(message, word):
+       channel = bot.get_channel(962379505270407168) # for me it's bot.get_channel(817421787289485322)
+       embed = discord.Embed(title="Profanity Alert!",description=f"{message.author.name} just said {word}", color=discord.Color.red()) # Let's make an embed!
+       await channel.send(embed=embed)
 
     # Reply to a !99 message with a random Peralta quote
     @bot.command(name='99', help='Responds with a random quote from Brooklyn 99')
