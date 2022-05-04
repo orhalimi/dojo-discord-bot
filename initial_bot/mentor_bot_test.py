@@ -73,16 +73,21 @@ def main():
             f'Hi {member.name}, welcome to my Discord server!'
         )
 
-    #save messages that were sent in private mentoring rooms
-    badwords = ['bad', 'words', 'here']
+    # Save messages that were sent in private mentoring rooms
     @bot.event
+    # private mentoring rooms will have some identifier in their names, so the bot can decide whether or not to save the message
+    prvt_ment_channels_mark = 'shlomi'
     async def on_message(message):
-        for i in badwords:
-            if i in message.content:
-                await message.channel.send(f"{message.author.mention} please dont")
-                bot.dispatch('profanity', message, i)
-        await bot.process_commands(message)
+        if not message.author.bot and prvt_ment_channels_mark in message.channel.name:
+            with open("initial_bot/new_message.txt", 'w') as f:
+                f.write(message.content)
+            await message.channel.send(f"{message.author.mention} I saved your message")
 
+        
+        #         bot.dispatch('profanity', message, i)
+    
+
+    
     @bot.event
     async def on_profanity(message, word):
        channel = bot.get_channel(962379505270407168) # for me it's bot.get_channel(817421787289485322)
