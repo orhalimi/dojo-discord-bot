@@ -5,6 +5,7 @@ import os
 import random
 import discord
 import argparse
+from datetime import datetime
 from discord.ext import commands
 from discord.utils import get
 
@@ -75,29 +76,26 @@ def main():
 
     # Save messages that were sent in private mentoring rooms
     @bot.event
-    
-    #private mentoring rooms will have some identifier in their names, so the bot can decide whether or not to save the message.
-    #For now I am tentatively using "shlomi" as the identifier :-)
-    
-    prvt_ment_channels_mark = 'shlomi'
     async def on_message(message):
-        if not message.author.bot and prvt_ment_channels_mark in message.channel.name:
-            with open(f"initial_bot/{message.channel.name}_messages.txt", 'a+') as f:
-                first_char = f.read(1)
-                if not first_char:
-                    f.write("\n")    
-                f.write(message.content)
-            await message.channel.send(f"{message.author.mention} I saved your message")
-
+        '''        
+        private mentoring rooms will have some identifier in their names, so the bot can decide whether or not to save the message.
+        For now I am tentatively using "shlomi" as the identifier :-)
         
-        #         bot.dispatch('profanity', message, i)
-    
-
+        '''
+        prvt_ment_channels_mark = 'shlomi'
+        channel_name = message.channel.name
+        author = message.author
+        if not author.bot and prvt_ment_channels_mark in channel_name:
+            with open(f"initial_bot/{channel_name}_messages.txt", 'a+') as f:
+                date = (message.created_at)
+                f.write(f'{date:%d/%m/%Y %H:%M}\n{author.name}\n')
+                f.write(message.content + "\n\n")
+            bot.dispatch('documentation', author.name)
     
     @bot.event
-    async def on_profanity(message, word):
+    async def on_documentation(author):
        channel = bot.get_channel(962379505270407168) # for me it's bot.get_channel(817421787289485322)
-       embed = discord.Embed(title="Profanity Alert!",description=f"{message.author.name} just said {word}", color=discord.Color.red()) # Let's make an embed!
+       embed = discord.Embed(title="Message Documentation", description=f"{author} - your message has been saved", color=discord.Color.blurple()) # Let's make an embed!
        await channel.send(embed=embed)
 
     # Reply to a !99 message with a random Peralta quote
