@@ -75,11 +75,17 @@ def main():
 
     # Save messages that were sent in private mentoring rooms
     @bot.event
-    # private mentoring rooms will have some identifier in their names, so the bot can decide whether or not to save the message
+    
+    #private mentoring rooms will have some identifier in their names, so the bot can decide whether or not to save the message.
+    #For now I am tentatively using "shlomi" as the identifier :-)
+    
     prvt_ment_channels_mark = 'shlomi'
     async def on_message(message):
         if not message.author.bot and prvt_ment_channels_mark in message.channel.name:
-            with open("initial_bot/new_message.txt", 'w') as f:
+            with open(f"initial_bot/{message.channel.name}_messages.txt", 'a+') as f:
+                first_char = f.read(1)
+                if not first_char:
+                    f.write("\n")    
                 f.write(message.content)
             await message.channel.send(f"{message.author.mention} I saved your message")
 
