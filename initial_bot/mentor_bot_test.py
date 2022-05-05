@@ -83,18 +83,17 @@ def main():
         
         '''
         prvt_ment_channels_mark = 'shlomi'
-        channel_name = message.channel.name
+        channel = message.channel
         author = message.author
-        if not author.bot and prvt_ment_channels_mark in channel_name:
-            with open(f"initial_bot/{channel_name}_messages.txt", 'a+') as f:
+        if not author.bot and prvt_ment_channels_mark in channel.name:
+            with open(f"initial_bot/{channel.name}_messages.txt", 'a+') as f:
                 date = (message.created_at)
                 f.write(f'{date:%d/%m/%Y %H:%M}\n{author.name}\n')
                 f.write(message.content + "\n\n")
-            bot.dispatch('documentation', author.name)
+            bot.dispatch('documentation', channel, author.name)
     
     @bot.event
-    async def on_documentation(author):
-       channel = bot.get_channel(962379505270407168) # for me it's bot.get_channel(817421787289485322)
+    async def on_documentation(channel, author):
        embed = discord.Embed(title="Message Documentation", description=f"{author} - your message has been saved", color=discord.Color.blurple()) # Let's make an embed!
        await channel.send(embed=embed)
 
