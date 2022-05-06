@@ -88,13 +88,14 @@ def main():
         if not author.bot and prvt_ment_channels_mark in channel.name:
             with open(f"initial_bot/{channel.name}_messages.txt", 'a+') as f:
                 date = (message.created_at)
+                f.write(f'In channel id: {channel.id}\n')
                 f.write(f'{date:%d/%m/%Y %H:%M}\n{author.name}\n')
                 f.write(message.content + "\n\n")
             bot.dispatch('documentation', channel, author.name)
     
     @bot.event
     async def on_documentation(channel, author):
-       embed = discord.Embed(title="Message Documentation", description=f"{author} - your message has been saved", color=discord.Color.blurple()) # Let's make an embed!
+       embed = discord.Embed(title="Message Documentation", description=f"{author} - your message has been saved", color=discord.Color.blurple())
        await channel.send(embed=embed)
 
     # Reply to a !99 message with a random Peralta quote
