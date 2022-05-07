@@ -1,0 +1,7 @@
+events:
+  on_ready:
+    replies:
+      - '<member_name> has connected to Discord!'
+  on_member_join:
+    replies:
+      - 'Hi <member_name>, welcome to my Discord server!'
