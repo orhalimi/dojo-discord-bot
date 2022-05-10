@@ -82,10 +82,10 @@ def main():
         For now I am tentatively using "shlomi" as the identifier :-)
         
         '''
-        prvt_ment_channels_mark = 'shlomi'
+        prvt_ment_channels_mark = '_mentors_'
         channel = message.channel
         author = message.author
-        if not author.bot and prvt_ment_channels_mark in channel.name:
+        if (not author.bot) and (prvt_ment_channels_mark in channel.name):
             with open(f"initial_bot/{channel.name}_messages.txt", 'a+') as f:
                 date = (message.created_at)
                 f.write(f'In channel id: {channel.id}\n')
