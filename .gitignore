@@ -133,4 +133,3 @@ migrations
 hooks
 testing
 *.zip
-test_api.py
