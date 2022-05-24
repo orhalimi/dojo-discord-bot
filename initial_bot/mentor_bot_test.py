@@ -8,6 +8,8 @@ import argparse
 from datetime import datetime
 from discord.ext import commands
 from discord.utils import get
+from discord.abc import PrivateChannel
+from db_hooks import create_message
 
 
 def parse_arguments():
@@ -82,20 +84,28 @@ def main():
         For now I am tentatively using "shlomi" as the identifier :-)
         
         '''
-        prvt_ment_channels_mark = '_mentors_'
+        #prvt_ment_channels_mark = '_mentors_'
+        message_id = message.id
+        profile_id = message.author
+        room_id = message.channel.id;
+        content = message.content
+        recorded_channels = [962379505270407168]
+
         channel = message.channel
         author = message.author
-        if (not author.bot) and (prvt_ment_channels_mark in channel.name):
-            with open(f"initial_bot/{channel.name}_messages.txt", 'a+') as f:
-                date = (message.created_at)
-                f.write(f'In channel id: {channel.id}\n')
-                f.write(f'{date:%d/%m/%Y %H:%M}\n{author.name}\n')
-                f.write(message.content + "\n\n")
+
+        if (not profile_id.bot) and (room_id in recorded_channels):
+            create_message(message_id, profile_id, room_id, content)
+            # with open(f"initial_bot/{channel.name}_messages.txt", 'a+') as f:
+            #     date = (message.created_at)
+            #     f.write(f'In channel id: {channel.id}\n')
+            #     f.write(f'{date:%d/%m/%Y %H:%M}\n{author.name}\n')
+            #     f.write(message.content + "\n\n")
             bot.dispatch('documentation', channel, author.name)
     
     @bot.event
     async def on_documentation(channel, author):
-       embed = discord.Embed(title="Message Documentation", description=f"{author} - your message has been saved", color=discord.Color.blurple())
+       embed = discord.Embed(title="Message Documentation", description=f"{author} - your message has been saved to the DB", color=discord.Color.blurple())
        await channel.send(embed=embed)
 
     # Reply to a !99 message with a random Peralta quote
