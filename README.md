@@ -31,7 +31,7 @@ pip install -r requirements.txt
 # create admin account to use the ORM features
 (env) python3 manage.py createsuperuser
 
-# open "http://localhost:8000/admin" to connect 
+# open "127.0.0.1:3000/admin" to connect 
 ```
 
 ## Contributing
