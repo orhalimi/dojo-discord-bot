@@ -40,7 +40,6 @@ class RoomAdmin(admin.ModelAdmin):
     list_display = [
         '__str__',
         'get_message_amount',
-        'get_events',
         'updated_at']
     
     list_filter =  ['created_at']

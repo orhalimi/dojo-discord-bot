@@ -26,10 +26,10 @@ class Room(BaseModel):
                 
         return f'{mentor} mentor {student}'
             
-    @admin.display(description='Events')
-    def get_events(self):
-        events = Event.objects.filter(room = self.id).__len__()
-        return events
+    # @admin.display(description='Events')
+    # def get_events(self):
+    #     events = Event.objects.filter(room = self.id).__len__()
+    #     return events
         
     @admin.display(description='Messages')
     def get_message_amount(self):
