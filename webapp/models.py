@@ -12,6 +12,7 @@ class BaseModel(models.Model):
 
 
 class Room(BaseModel):
+    ## CR: need a way to know the discord room id
     profiles = models.ManyToManyField('webapp.Profile', through='Member')
     updated_at = models.DateTimeField(auto_now=True)
 
