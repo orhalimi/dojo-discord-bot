@@ -36,6 +36,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     
     def create(self, request):
+        ## CR: 🤨
+        ## if you want to log, log, don't print
         print("new profile is created!")
         return super().create(request)
     

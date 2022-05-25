@@ -24,11 +24,14 @@ class MessageTable(admin.StackedInline):
     readonly_fields = ('content', 'profile')
     extra = 0
 
+## CR: typo
+## CR: typo
 class SummarieTabel(admin.StackedInline):
     model = Summary
     readonly_fields = ('content', 'profile')
     extra = 0
     
+## CR: typo
 class EventTabel(admin.StackedInline):
     model = Event
     readonly_fields = ('name', 'message', 'target_date_and_time')
@@ -37,6 +40,10 @@ class EventTabel(admin.StackedInline):
 # Admin Classes
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
+    ## CR: created_at sounds important
+    ## CR: if this is going to be used a lot, maybe some event statistics?
+    ##     how many happened out of how many weeks, did the last one happen,
+    ##     is there a next one scheduled?
     list_display = [
         '__str__',
         'get_message_amount',
@@ -49,6 +56,7 @@ class RoomAdmin(admin.ModelAdmin):
             'fields': ('id', ('created_at', 'updated_at'))
         }),)
 
+    ## CR: if profiles has a name, should be searchable too
     search_fields = ['profiles__discord_name']
 
 
@@ -63,6 +71,7 @@ class MemberAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'created_at','role','room','profile')    
     list_display = ['id','__str__','role','room', 'created_at']
     list_filter =  ['created_at']
+    ## CR: if profiles has a name, should be searchable too
     search_fields = ['profile__discord_name']
     list_display_links = ['__str__']
     

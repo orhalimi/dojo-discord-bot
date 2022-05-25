@@ -129,7 +129,10 @@ dmypy.json
 .pyre/
 
 # added by zion
+## CR: you are so going to forget migrations here and that is bad, you really want migrations in source control
 migrations
+## CR: not sure why?
 hooks
 testing
+## CR: also a bit dangerous, easy to later forget to add a needed file that happens to be .zip
 *.zip

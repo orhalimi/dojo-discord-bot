@@ -21,6 +21,7 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Room
+        ## CR: do we need updated_at? wouldn't it be auto-populated?
         fields = ['id', 'profiles', 'updated_at']
 
 
