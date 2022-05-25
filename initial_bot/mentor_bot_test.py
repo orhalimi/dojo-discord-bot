@@ -1,13 +1,8 @@
-## CR: not a very useful comment :)
-# bot.py
-## CR: pdb, os, datetime, get not used
-import pdb
 import sys
-import os
 import random
 import discord
 import argparse
-from datetime import datetime
+import logging
 from discord.ext import commands
 from discord.utils import get
 
@@ -24,19 +19,22 @@ def parse_arguments():
 def main():
     parsed_args = parse_arguments()
     if parsed_args.token == None:
-        ## CR: if you want to log, log, don't print
-        print("Please try again, but this time enter a token as an argument")
+        logging.error(" Please try again, but this time enter a token as an argument")
         ## CR: return is much more polite and much less surprising than sys.exit(), should probably avoid
-        sys.exit()
+        ## CR reply - I changed to return, but must say that in the terminal there's no real difference (when running with no token and getting the error)
+        return
 
     ## CR: why is this inside main() and not top-level? From here up to and not including bot.run()
+    ## CR reply - I tried to take it up, and it doesn't seem to work. When taking the bot object instantiation up, "run" fails since it doesn't recognize the bot object.
+    ## I tried to keep only the instantiation inside and the functions outside. The bot runs, but doesn't respond to anything (seems that it doesn't recognize the functions when they are not in main).
+    ## I guess there is some way to do that, but I'll need to figure that out later
     intents = discord.Intents.all()
     bot = commands.Bot(command_prefix = '!', intents = intents, case_insensitive=True)
 
     @bot.event
     async def on_ready():
-        ## CR: if you want to log, log, don't print
-        print(f'{bot.user.name} has connected to Discord!')
+        logging.basicConfig(level = logging.INFO)
+        logging.info(f' {bot.user.name} has connected to Discord!')
 
     ## CR: it should probably have _some_ role, right?
     ## CR: eventually I guess we should have something that creates a room
@@ -83,17 +81,6 @@ def main():
                 await ctx.send(f'A room with the name: {room_name} already exists. Please choose a different name.')
 
 
-    ## CR: probably should remove?
-    # Send a gretting to members upon joining the server
-    @bot.event
-    async def on_member_join(member):
-        await member.create_dm()
-        await member.dm_channel.send(
-            f'Hi {member.name}, welcome to my Discord server!'
-        )
-
-    ## CR: https://stackoverflow.com/questions/49331096/why-does-on-message-stop-commands-from-working
-    ## CR: this needs to be changed when we connect to the DB of course
     # Save messages that were sent in private mentoring rooms
     @bot.event
     async def on_message(message):
@@ -111,17 +98,19 @@ def main():
                 date = (message.created_at)
                 f.write(f'In channel id: {channel.id}\n')
                 f.write(f'{date:%d/%m/%Y %H:%M}\n{author.name}\n')
-                f.write(message.content + "\n\n")
+                f.write(message.content + "\n\n") #this needs to be changed when we connect to the DB of course
             bot.dispatch('documentation', channel, author.name)
+
+        await bot.process_commands(message)
     
-    ## CR: we probably don't want this
+    #Will also be removed once we connect to the DB
     @bot.event
     async def on_documentation(channel, author):
        embed = discord.Embed(title="Message Documentation", description=f"{author} - your message has been saved", color=discord.Color.blurple())
        await channel.send(embed=embed)
 
-    ## CR: probably should remove?
     # Reply to a !99 message with a random Peralta quote
+    # Used for testing and will be removed once we're satisfied with the bot
     @bot.command(name='99', help='Responds with a random quote from Brooklyn 99')
     async def nine_nine(ctx):
         brooklyn_99_quotes = [
@@ -136,9 +125,9 @@ def main():
         response = random.choice(brooklyn_99_quotes)
         await ctx.send(response)
 
-    ## CR: probably should remove?
     # A !roll_dice message should be accompanied with 2 numbers - the 1st for the number of dice and the 2nd for the number of sides each die has
     # Roll the dice and return the sum of random numvers received
+    # Used for testing and will be removed once we're satisfied with the bot
     @bot.command(name='roll_dice', help='Simulates rolling dice.')
     async def roll(ctx, number_of_dice: int, number_of_sides: int):
         dice = [
