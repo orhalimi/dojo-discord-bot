@@ -1,0 +1,12 @@
+commands:
+  meetings:
+    save_meeting_summary:
+      name: meeting_summary
+      help: Saves the mentoring meeting summary🤖.
+      # replies:
+  channels:
+    create_private_channel:
+      name: private_channel
+      help: Creates private channel with the member names that is provided
+      # replies:
+
