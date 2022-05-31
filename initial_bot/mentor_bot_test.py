@@ -83,7 +83,6 @@ async def on_message(message):
     For now I am tentatively using "shlomi" as the identifier :-)
     
     '''
-    ## CR: private_mentor_channels_mark would be like 15% longer and so much more readable
     private_mentor_channels_mark = '_mentors_'
     channel = message.channel
     author = message.author
