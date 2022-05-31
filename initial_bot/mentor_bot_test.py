@@ -17,10 +17,18 @@ def parse_arguments():
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix = '!', intents = intents, case_insensitive=True)
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+stream_handler = logging.StreamHandler()
+stream_format = logging.Formatter('%(levelname)s - %(message)s')
+stream_handler.setFormatter(stream_format)
+
+logger.addHandler(stream_handler)
+
 @bot.event
 async def on_ready():
-    logging.basicConfig(level = logging.INFO)
-    logging.info(f' {bot.user.name} has connected to Discord!')
+    logger.info(f'{bot.user.name} has connected to Discord!')
 
 ## CR: it should probably have _some_ role, right?
 ## CR: eventually I guess we should have something that creates a room
@@ -130,7 +138,7 @@ async def on_command_error(ctx, error):
 def main():
     parsed_args = parse_arguments()
     if parsed_args.token == None:
-        logging.error(" Please try again, but this time enter a token as an argument")
+        logger.error('Please try again, but this time, enter a token as an argument using the -t flag')
         return
 
     bot.run(parsed_args.token)
