@@ -1,5 +1,5 @@
 # bot.py
-import pdb
+
 import sys
 import os
 import random
@@ -9,6 +9,50 @@ import argparse
 from discord.ext import commands
 from discord.utils import get
 import test_api as api 
+
+
+url = "http://127.0.0.1:8000/api"
+
+STUDENT_ROLE= f"{url}/roles/1/"
+MENTOR_ROLE= f"{url}/roles/2/"
+SUPER_MENTOR_ROLE= f"{url}/roles/3/"
+
+def get_member_obj(id,role,channel) -> Dict :
+    return {
+        "role":role,
+        "room" : f"{url}/rooms/{channel.id}/",
+        "profile":f"{url}/profiles/{id}/",
+        }
+
+
+def create_overwrites(guild, members) :
+            overwrites = {
+                guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                guild.me: discord.PermissionOverwrite(read_messages=True),
+            }
+            for member in members:
+                overwrites[member] = discord.PermissionOverwrite(
+                read_messages=True)
+            return overwrites     
+          
+def room_does_not_exist(guild, room_name) : 
+            for channel in guild.channels: 
+                if room_name == channel.name:
+                    return False
+            return True 
+
+async def create_room(ctx,members,room_name,overwrites) :
+            members_str = ', '.join(m.name for m in members)
+            room_created_message = f'Creating a private channel called {room_name} and adding {members_str} to it.'
+            channel = await ctx.guild.create_text_channel(room_name, overwrites=overwrites)
+            add_room_to_db_and_update_members(channel,members)
+            await ctx.send(room_created_message)
+
+def add_room_to_db_and_update_members(channel,members):
+    api.push_data("rooms",{"room_id": channel.id}) 
+    for (member,role) in zip(members,[STUDENT_ROLE,MENTOR_ROLE,SUPER_MENTOR_ROLE]):
+        api.push_data("profiles",{"profile_id": member.id,"discord_name":{str(member)}})
+        api.push_data("members",get_member_obj(member.id,role,channel))
 
 
 def parse_arguments():
@@ -29,75 +73,31 @@ def main():
     intents = discord.Intents.all()
     bot = commands.Bot(command_prefix = '!', intents = intents)
 
-    roles = {
-            'Student': "http://127.0.0.1:8000/api/roles/1",
-            'Mentor': "http://127.0.0.1:8000/api/roles/2",
-            'Super_Mentor': "http://127.0.0.1:8000/api/roles/3",
-            }
-
+    
+       
     @bot.event
     async def on_ready():
         print(f'{bot.user.name} has connected to Discord!')  
         
 
     @bot.command(name='private')
-    @commands.has_role('room-creator') ##Only server owner or someone with room-creator role can use this command;
+    # @commands.has_role('room-creator') ##Only server owner or someone with room-creator role can use this command;
     async def make_private_channel(ctx, *members: discord.Member):
         '''
-        Takes a list of 3 members: A mentee, a mentor and a super mentor. Order of mentioned members is important.
+        Takes a list of upto 3 members: A mentee, a mentor and a super mentor. Order of mentioned members is important.
+        Creates a room with the name of the 2 first members in the format of: mentor mentors mentee.
+        Creates an object to the db for the room and each of the members.
         '''
 
-        guild = ctx.guild
-        overwrites = {
-                guild.default_role: discord.PermissionOverwrite(read_messages=False),
-                guild.me: discord.PermissionOverwrite(read_messages=True),
-            }
+        overwrites = create_overwrites(ctx.guild,members)
 
-        url = "http://127.0.0.1:8000/api"
-        student = {
-            "id": members[0].id,
-            "name": members[0].display_name,
-            "role": f"{url}/roles/1/"
-        }
-        mentor = {
-            "id": members[1].id,
-            "name": members[1].display_name,
-            "role": f"{url}/roles/2/"
-        }
-        super_mentor = {
-            "id": members[2].id,
-            "name": members[2].display_name,
-            "role": f"{url}/roles/3/"
-        }
-
-        def getMemberObj(member) -> Dict :
-            return {
-            "role":{member["role"]},
-            "room" : f"{url}/rooms/{channel.id}/"
-            ,"profile":f"{url}/profiles/{member['id']}/"
-        }
-            ## Creates the permissions to view the room about to be created.
-        for member in members:
-            overwrites[member] = discord.PermissionOverwrite(
-                read_messages=True)
-
-        room_name = f'{mentor["name"]}_mentors_{student["name"]}'
-        existing_channels = discord.utils.get(
-            guild.channels, name=room_name)
-        if not existing_channels:
-            members_str = ', '.join(m.name for m in members)
-            channel = await guild.create_text_channel(room_name, overwrites=overwrites)
-            api.push_data("rooms",{"room_id": channel.id})
-
-            for member in members:
-                api.push_data("profiles",{"profile_id": member.id,"discord_name":member.display_name})
-
-            for member in [student,mentor,super_mentor]:
-                api.push_data("members",getMemberObj(member))
-
-            await ctx.send(f'Creating a private channel called {room_name} and adding {members_str} to it.')
+        #Discord saves channel names in all lower case.
+        room_name = f'{members[1].display_name}_mentors_{members[0].display_name}'.lower()
+       
+        if room_does_not_exist(ctx.guild, room_name):
+          await create_room(ctx,members,room_name,overwrites)
         else:
-            await ctx.send(f'A room with the name: {room_name} already exists. Please check if this room already exists.')
+            await ctx.send(f'A room with the name: {room_name} already exists. Please check if a room with these members already exists.')
 
     # Send a gretting to members upon joining the server
     @bot.event
