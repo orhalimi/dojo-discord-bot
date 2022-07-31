@@ -94,7 +94,7 @@ class Summary(BaseModel):
         ## CR: maybe a good idea to wrap with <>
         return self.content[:50]
 
-     class Meta:
+    class Meta:
         verbose_name_plural = "Summaries"
         
 class Event(BaseModel):
