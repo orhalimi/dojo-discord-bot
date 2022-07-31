@@ -94,6 +94,9 @@ class Summary(BaseModel):
         ## CR: maybe a good idea to wrap with <>
         return self.content[:50]
 
+     class Meta:
+        verbose_name_plural = "Summaries"
+        
 class Event(BaseModel):
     
     room = models.ForeignKey("webapp.Room", null=True, on_delete=models.SET_NULL)
