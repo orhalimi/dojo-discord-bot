@@ -1,4 +1,4 @@
-# bot.py
+    # bot.py
 import discord
 import argparse
 from discord.ext import commands
@@ -117,6 +117,7 @@ class DiscordBot(commands.Bot):
 
 
         @self.command(name='private')
+        @commands.has_role('room-creator') ##Only server owner or someone with room-creator role can use this command;
         async def make_private_channel(ctx, *members: discord.Member) -> None:
             guild = ctx.guild
 
