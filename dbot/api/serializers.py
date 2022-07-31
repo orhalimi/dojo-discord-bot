@@ -10,47 +10,47 @@ from webapp.models import (
     Message
 )
 
+
 # Serializers define the API representation.
 class MemberSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
         model = Member
-        fields = ['id', 'profile', 'role', 'room']
+        fields = ['profile', 'role', 'room']
 
 
 
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Room
-        ## CR: do we need updated_at? wouldn't it be auto-populated?
-        fields = ['id', 'profiles', 'updated_at']
+        fields = ['id']
 
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields = ['id', 'discord_name']
+        fields = ['id', 'discord_name','real_name','phone_number']
 
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Event
-        fields = ['id', 'name', 'message','room', 'target_date_and_time']
+        fields = ['room', 'target_date_and_time']
 
 
 
 class RoomProfileRoleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RoomProfileRole
-        fields = ['id', 'name', 'profile']
+        fields = ['id', 'name']
 
 
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Message
-        fields = ['id', 'content', 'profile', 'room']
+        fields = ['content', 'profile', 'room']
 
 
 
