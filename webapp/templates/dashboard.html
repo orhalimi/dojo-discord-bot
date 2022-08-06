@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<h1>here some data to consume</h1>
+<body>
+    {% for message in messages %}
+    <ul>
+        <h1>{{message.profile}}</h1>
+        <h3>{{message.room}}</h3>
+        <h5>{{message.content}}</h5>
+    </ul>
+    {% endfor %}
+</body>
+{% endblock content %}
