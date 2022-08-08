@@ -135,7 +135,6 @@ class DiscordBot(commands.Bot):
             if not existing_channels:
                 members_str = ', '.join(m.name for m in members)
                 channel = await guild.create_text_channel(room_name, overwrites=overwrites)
-                channelId = channel.id
                 await channel.send(f'Welcome! This is an intro message!')
                 room_path = self.api_address + "rooms/" + str(channel.id) + "/"
 
@@ -156,6 +155,7 @@ class DiscordBot(commands.Bot):
                     "role": self.api_address + "roles/" + str(index+1) + "/",
                     "room": room_path
                     }
+                    
 
 
                 if self.core.exist("profiles", members[index].id):
@@ -169,6 +169,20 @@ class DiscordBot(commands.Bot):
             await ctx.send(f'Creating a private channel called {room_name} and adding {members_str} to it.')
             return
 
+        @self.command(name='namephone')
+        async def update_name_phone(ctx,*details: str) -> None: 
+            member = ctx.author
+            print(member)
+            print(details[0])
+            new_details = {
+                "id": member.id,
+                "discord_name": member.name,
+                "real_name": details[0],
+                "phone_number" : details[1],
+            }
+            if self.core.exist("profiles", member.id):
+                self.core.update("profiles",new_details,member.id)
+               
 
 bot = DiscordBot()
 bot.run(bot.token.token)
