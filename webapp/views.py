@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Message
+from .models import Message, Room
 
 
 def Dashboard(request):
     messages = Message.objects.all()
-    context = {"messages": messages}
+    rooms = Room.objects.all()
+
+    context = {"messages": messages, "rooms":rooms}
     
     return render(request, "dashboard.html", context)

@@ -1,22 +1,17 @@
 {% extends 'main.html' %}
-{% load static %}
-
 {% block content %}
 <h1>here some data to consume</h1>
 <body>
-    {% for message in messages %}
-    <table border="1" style="background-color:#0099FF;border-collapse:collapse;border:1px solid #000000;color:#000000;" cellpadding="1px" cellspacing="0px">
-   
+    <table border="1" cellpadding="1px" cellspacing="0px">
+    {% for room in rooms %}
         <tr>
             <th>Sender</th>
             <th>Room</th>
             <th>Message</th>
           </tr>
-          <th>{{message.profile}}</th>
-          <th>{{message.room}}</th>
-          <th>{{message.content}}</th>
+          <th>{{ room }}</th>
           <br>
+          {% endfor %}
       </table> 
-    {% endfor %}
 </body>
 {% endblock content %}
