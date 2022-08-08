@@ -117,10 +117,9 @@ class DiscordBot(commands.Bot):
 
 
         @self.command(name='private')
-        @commands.has_role('room-creator') ##Only server owner or someone with room-creator role can use this command;
         async def make_private_channel(ctx, *members: discord.Member) -> None:
             guild = ctx.guild
-
+            
             overwrites = {
                     guild.default_role: discord.PermissionOverwrite(read_messages=False),
                     guild.me: discord.PermissionOverwrite(read_messages=True),
@@ -129,7 +128,7 @@ class DiscordBot(commands.Bot):
             for member in members:
                 overwrites[member] = discord.PermissionOverwrite(read_messages=True)
             
-            room_name = f'{members[1].display_name} Mentors {members[0].display_name}'
+            room_name = f'{members[1].display_name} mentors {members[0].display_name}'
 
             existing_channels = discord.utils.get(guild.channels, name=room_name)
 
@@ -137,6 +136,7 @@ class DiscordBot(commands.Bot):
                 members_str = ', '.join(m.name for m in members)
                 channel = await guild.create_text_channel(room_name, overwrites=overwrites)
                 channelId = channel.id
+                await channel.send(f'Welcome! This is an intro message!')
                 room_path = self.api_address + "rooms/" + str(channel.id) + "/"
 
             room_data = {"id": channel.id}
@@ -167,6 +167,7 @@ class DiscordBot(commands.Bot):
             
             logging.debug('private channel created!')
             await ctx.send(f'Creating a private channel called {room_name} and adding {members_str} to it.')
+            return
 
 
 bot = DiscordBot()
