@@ -5,11 +5,18 @@
 <h1>here some data to consume</h1>
 <body>
     {% for message in messages %}
-    <ul>
-        <h1>{{message.profile}}</h1>
-        <h3>{{message.room}}</h3>
-        <h5>{{message.content}}</h5>
-    </ul>
+    <table border="1" style="background-color:#0099FF;border-collapse:collapse;border:1px solid #000000;color:#000000;" cellpadding="1px" cellspacing="0px">
+   
+        <tr>
+            <th>Sender</th>
+            <th>Room</th>
+            <th>Message</th>
+          </tr>
+          <th>{{message.profile}}</th>
+          <th>{{message.room}}</th>
+          <th>{{message.content}}</th>
+          <br>
+      </table> 
     {% endfor %}
 </body>
 {% endblock content %}
