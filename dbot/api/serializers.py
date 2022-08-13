@@ -50,7 +50,7 @@ class RoomProfileRoleSerializer(serializers.HyperlinkedModelSerializer):
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Message
-        fields = ['content', 'profile', 'room']
+        fields = ['created_at','content', 'profile', 'room']
 
 
 
