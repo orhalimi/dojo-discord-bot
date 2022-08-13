@@ -6,10 +6,15 @@
 	<title>Dashboard</title>
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<script defer src="{% static 'js/main.js' %}"></script>
 </head>
 <body>
-	<h1>here the block of content from other page</h1>
+
+	  <div class="side-bar">
+		
         {% block content %}
         {% endblock content %}
+	</div>
+	
 </body>
 </html>
