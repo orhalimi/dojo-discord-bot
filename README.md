@@ -18,16 +18,20 @@ install requirements using package manager [pip](https://pip.pypa.io/en/stable/)
 ```
 pip install -r requirements.txt
 
-# create a development SQLite DB
+# create an development sqlite3 database
+(env) python3 manage.py makemigrations webapp
 (env) python3 manage.py migrate
 
-# start the server, the default settings.py file is settings\development.py
+# creating the three roles
+(env) python3 setup.py
+
+# start the server
 (env) python3 manage.py runserver
 
-# create a admin account to use the ORM features
+# create admin account to use the ORM features
 (env) python3 manage.py createsuperuser
 
-# open "http://localhost:8000/admin" to connect 
+# open "127.0.0.1:3000/admin" to connect 
 ```
 
 ## Contributing

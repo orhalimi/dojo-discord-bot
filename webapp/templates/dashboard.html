@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+{% block content %}
+<h2>Admin panel chat display</h2>
+<body>
+   <div class="rooms-container">
+    <div class="room-list">
+    {% for room in rooms %}
+<div class="room {{room.id}}" onclick="proccessMessages(this.classList[1])">{{room}}</div>
+<br>
+    {% endfor %}
+</div>
+<div class="chat-container">
+<h4>Display from date:</h4>
+<hr>
+<div class="chat">
+        {% block chat %}
+        
+        {% endblock chat %}
+    </div>
+</div>
+</div>
+</body>
+{% endblock content %}

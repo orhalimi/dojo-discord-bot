@@ -1,5 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import Message, Room
 
-# Create your views here.
-def home(request):
-    return render(request, "homepage.html")
+
+def Dashboard(request):
+    messages = Message.objects.all()
+    rooms = Room.objects.all()
+
+    context = {"messages": messages, "rooms":rooms}
+    
+    return render(request, "dashboard.html", context)

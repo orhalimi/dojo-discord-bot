@@ -127,6 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
 #vlc
 .vscode/
+
+log.txt
