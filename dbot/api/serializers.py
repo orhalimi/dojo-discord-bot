@@ -22,7 +22,7 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Room
-        fields = ['id']
+        fields = ['id', '__str__']
 
 
 

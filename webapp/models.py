@@ -25,6 +25,10 @@ class Room(BaseModel):
 
         ## CR: maybe a good idea to wrap with <>
         return f'{mentor} mentor {student}'
+
+    def __id__(self):
+        return self.id
+
             
     @admin.display(description='Messages')
     def get_message_amount(self):
