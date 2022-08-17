@@ -22,8 +22,6 @@ pip install -r requirements.txt
 (env) python3 manage.py makemigrations webapp
 (env) python3 manage.py migrate
 
-# creating the three roles
-(env) python3 setup.py
 
 # start the server
 (env) python3 manage.py runserver
