@@ -4,29 +4,19 @@ from django.db import migrations
 from webapp.models import RoomProfileRole
 
 
-def create_student(apps, schema_editor):
-    role = RoomProfileRole()
-    role.name = "Student"
-    role.save()
-
-def create_mentor(apps, schema_editor):
-    role = RoomProfileRole()
-    role.name = "Mentor"
-    role.save()
-
-def create_super_mentor(apps, schema_editor):
-    role = RoomProfileRole()
-    role.name = "Super Mentor"
-    role.save()
+def create_roles(apps, schema_editor):
+    RoomProfileRole.objects.bulk_create([
+        RoomProfileRole(id=1, name="Student"),
+        RoomProfileRole(id=2, name="Mentor"),
+        RoomProfileRole(id=3, name="Super Mentor"),
+    ])
 
 class Migration(migrations.Migration):
-
+    
     dependencies = [
         ('webapp', '0002_alter_summary_options'),
     ]
 
     operations = [
-        migrations.RunPython(create_student, migrations.RunPython.noop),
-        migrations.RunPython(create_mentor, migrations.RunPython.noop),
-        migrations.RunPython(create_super_mentor, migrations.RunPython.noop)
+        migrations.RunPython(create_roles, migrations.RunPython.noop),
     ]
