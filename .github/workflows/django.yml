@@ -27,6 +27,6 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       env: 
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        SECRET_KEY: "*rn_4#=7+9n*(f@(7q#-y&txql*)=^2j4!h&xe!v5(p1lb+^zs"
       run: |
         python manage.py test webapp/tests
