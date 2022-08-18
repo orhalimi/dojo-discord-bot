@@ -47,6 +47,8 @@ class DiscordBot(commands.Bot):
 
 
     async def on_message(self, ctx) -> None:
+        if "mentors" not in ctx.channel.__str__():
+            return
         if not ctx.content.startswith('!'):
             content = ctx.content
 
