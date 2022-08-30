@@ -1,27 +1,30 @@
 {% extends 'main.html' %}
+
 {% block content %}
-<h2>Admin panel chat display</h2>
+
+
+<h2 class="mx-5">Admin panel chat display</h2>
 <body>
-   <div class="rooms-container">
-    <div class="room-list">
-    {% for room in rooms %}
-<div class="room {{room.id}}" onclick="proccessMessages(this.classList[1])">{{room}}</div>
-<br>
-    {% endfor %}
-</div>
-<div class="chat-container">
-    <div class="chat-title">
-<h4>Display from date:</h4>
-<select id="date-sort">
-</select>
-</div>
-<hr>
-<div class="chat">
-        {% block chat %}
-        
-        {% endblock chat %}
+
+    {% for r in rooms %}
+    <div class="room_card card border border-dark border-2 mx-5 my-2 scrolly">
+        <h3 class="text-decoration-underline ">{{ r }}</h3>
+        {% for m in messages %}
+            <div class="message_card">
+            {% if m.room.id == r.id %}
+            <div class="d-inline-flex">
+            <h5>{{m.profile}}, </h5>
+            <p>{{m.created_at}}:</p>   
+            <p class="mx-2">{{ m.content }}</p>
+                
+            
+            </div>
+            {%endif%}
+            </div>
+            <!-- <li>{{ m }} | {{ m.room.id }}</li> -->
+        {% endfor %}
     </div>
-</div>
-</div>
+    {% endfor %}
+    
 </body>
 {% endblock content %}

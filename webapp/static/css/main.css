@@ -4,9 +4,16 @@ html{
 body{
     padding: 0px;
     margin: 0px;
-    background-color: #89CFF0;
+    background-color: #f5f5dc;
 }
 
+.scrolly{
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+
+/*
 .rooms-container{
     display:grid;
     grid-template-columns: 1fr 5fr;
@@ -60,4 +67,4 @@ body{
 	position:relative;
 	top:1px;
 }
-
+*/
