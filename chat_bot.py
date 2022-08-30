@@ -8,7 +8,7 @@ from core import Core
 import logging
 import datetime
 
-ON_READY_MSG = "ChatBot is wake's up!"
+ON_READY_MSG = "ChatBot is waking up!"
 LOG_PWD = "logs/bots/chat_bot.log"
 LOG_FMT = "%(asctime)s | %(message)s"
 ADDRESS = "http://127.0.0.1:8000/api/"
