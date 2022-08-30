@@ -12,7 +12,7 @@ def dashboard(request):
     """@dashboard view control on how we server the html and the date from the server"""
     date: str = request.GET.get("from_date")
     all_rooms = Room.objects.all().order_by("-created_at")
-    all_messages = Message.objects.all().order_by("-created_at")
+    all_messages = Message.objects.all().order_by("created_at")
     profiles = Profile.objects.all()
 
     if date != None:
@@ -21,7 +21,7 @@ def dashboard(request):
 
         all_messages = Message.objects.filter(
             created_at__range=[date, c_date_format]
-        ).order_by("-created_at")
+        ).order_by("created_at")
 
 
     context = {"messages": all_messages, "rooms": all_rooms}
