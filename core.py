@@ -4,7 +4,8 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
-AUTH = {"username": "shlomi", "password": "1"}
+AUTH = {"username": "admin", "password": "admin4"}
+
 ADDRESS = "http://127.0.0.1:8000/api/"
 
 
