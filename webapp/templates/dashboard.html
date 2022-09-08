@@ -1,23 +1,44 @@
 {% extends 'main.html' %}
+
 {% block content %}
-<h2>Admin panel chat display</h2>
+
+
+<h2 class="mx-5 my-4">Admin panel chat display</h2>
 <body>
-   <div class="rooms-container">
-    <div class="room-list">
-    {% for room in rooms %}
-<div class="room {{room.id}}" onclick="proccessMessages(this.classList[1])">{{room}}</div>
-<br>
-    {% endfor %}
-</div>
-<div class="chat-container">
-<h4>Display from date:</h4>
-<hr>
-<div class="chat">
-        {% block chat %}
-        
-        {% endblock chat %}
+
+    {% for r in rooms %}
+    <h4 style="margin-left:3%;padding: 2px;">{{r}}</h4>
+    <h5 style="margin-left:3%;padding: 0px;font-size: 12px;">{{r.id}}</h5>
+    <div class="card rounded border border-1 mx-5 my-4 scrolly">
+
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                <th style="width: 5%" scope="col">#</th>
+                <th style="width: 15%" scope="col">Time</th>
+                <th style="width: 10%" scope="col">Member</th>
+                <th style="width: 70%;" scope="col">Message</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for m in messages %}
+                {% if m.room.id == r.id %}
+              <tr>
+                <th style="padding:10px;" scope="row">{{m.id}}</th>
+                <td>{{ m.created_at |date:"SHORT_DATETIME_FORMAT"}}</td>
+                <td>{{ m.profile }}</td>
+                <td>{{ m.content }}</td>
+              </tr>
+                {% endif %}
+            {% endfor %}
+
+            </tbody>
+          </table>
+            </div>
+            </div>
+            <!-- <li>{{ m }} | {{ m.room.id }}</li> -->
     </div>
-</div>
-</div>
+    {% endfor %}
+    
 </body>
 {% endblock content %}

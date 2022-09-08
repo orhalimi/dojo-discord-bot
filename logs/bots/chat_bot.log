@@ -1,0 +1,4 @@
+2022-08-29 17:40:11,488 | Keeping shard ID None websocket alive with sequence 18.
+2022-08-29 17:40:11,647 | Dispatching event socket_raw_receive
+2022-08-29 17:40:11,647 | For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+2022-08-29 17:40:11,647 | Dispatching event socket_response
