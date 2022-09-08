@@ -57,6 +57,7 @@ class Profile(BaseModel):
     discord_name = models.CharField(max_length=128)
     real_name = models.CharField(max_length=128, null=True)
     phone_number = models.CharField(max_length=16, null=True)
+    subscribed = models.BooleanField(default=True)
     
 
 

@@ -17,6 +17,7 @@ MINUTES_BEFORE_MSG = 15
 MSG_TEMPLATE = "Reminder!"
 ON_READY_MSG = "ReminderBot is wake's up!"
 
+
 class ReminderBot(commands.Bot):
     ''' this function recive an room id and just sent an message about upcoming event '''
 
@@ -51,7 +52,8 @@ class ReminderBot(commands.Bot):
                 today_time = dt.datetime.now().time()
                 event_room_id = re.findall("[0-9]{19}", event["room"])[-1]
 
-                print(f"{index}, room:{event_room_id} be notify at {event_date.hour}:{event_minute}")
+                print(
+                    f"{index}, room:{event_room_id} be notify at {event_date.hour}:{event_minute}")
                 if today_time.hour == event_date.hour and today_time.minute == event_minute:
                     await self.sent_reminder(int(event_room_id))
         return sys.exit(0)
@@ -63,11 +65,25 @@ class ReminderBot(commands.Bot):
         if channel is not None:
             await channel.send(MSG_TEMPLATE)
         else:
-            logging.critical("could not find this channel! maybe the input type is diffrent?")
+            logging.critical(
+                "could not find this channel! maybe the input type is diffrent?")
+
+    async def remind_name_phone(self) -> None:
+        '''this function checks which of the current users in our DB did not register private details and sends them a PM reminding them to do so'''
+        guild = self.guilds[0]
+        data = self.core.get('profiles/')
+        profiles = json.loads(data.text)
+        members = guild.members
+        for m in profiles:
+            if m['subscribed']:
+                if m['real_name'] == None or m['phone_number'] == None:
+                    user_id = m['id']
+                    member = discord.utils.find(lambda m: m.id == user_id, members)
+                    await member.send('This is a reminder to please update your details in the Dojo DB, to do so use the command: !namephone followed by your first name and phone number (here or in your private mentoring room) Example: !namephone FirstName 0505555555, If you do not wish to see this message again you can reply with "!namephone unsubscribe" and you will not be contacted about this again')
 
     async def on_ready(self) -> None:
         ''' this function recive an room id and just sent an message about upcoming event '''
-        
         print(ON_READY_MSG)
         logging.debug(ON_READY_MSG)
+        await self.remind_name_phone()
         await self.search_events()
