@@ -3,13 +3,15 @@
 {% block content %}
 
 
-<h2 class="mx-5 my-4">Admin panel chat display</h2>
+<h2 class="mx-4 text-decoration-underline my-4">Admin panel info display</h2>
 <body>
-
+<hr>
     {% for r in rooms %}
+    <div class="room-container">
+      <div class="row">
+      <div class="col-9">
     <h4 style="margin-left:3%;padding: 2px;">{{r}}</h4>
-    <h5 style="margin-left:3%;padding: 0px;font-size: 12px;">{{r.id}}</h5>
-    <div class="card rounded border border-1 mx-5 my-4 scrolly">
+    <div class="card rounded border border-1 mx-4 my-4">
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark">
@@ -30,14 +32,56 @@
                 <td>{{ m.content }}</td>
               </tr>
                 {% endif %}
+              </div>
             {% endfor %}
 
             </tbody>
           </table>
             </div>
+          </div>
+            <div class="summary-event-table mt-5  card col-3 d-flex flex-row" style="width:20%">
+              <div>  <h5 class="text-decoration-underline ms-1 ">Meetings</h5>
+                <table class="table border-left border-2 ">
+                  <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="text-decoration-underline ">Meeting set to:</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for e in events%}
+                      {% if e.room.id == r.id %}
+                      <tr>
+                        <td>{{e.target_date_and_time | date}}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                  </tbody>
+                  </table>
+                </div>
+              <div>
+              <h5 class="text-decoration-underline">Summaries</h5>
+              <table class="table ">
+                <thead >
+                <tr>
+                  <th scope="col" class="text-decoration-underline border-start">Summary sent at:</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for s in summaries%}
+                    {% if s.room.id == r.id%}
+                    <tr>
+                    <td class="border-start">{{s.created_at |date}}</td>
+                  </tr>
+                  {%endif%}
+                  {% endfor %}
+                </tbody>
+                </table>
             </div>
-            <!-- <li>{{ m }} | {{ m.room.id }}</li> -->
+            
+          </div>
+          </div>
     </div>
+    <hr/>
     {% endfor %}
     
 </body>

@@ -4,15 +4,15 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
-AUTH = {"username": "zionamsalem", "password": "pass"}
+AUTH = {"username": "admin", "password": "admin4"}
 ADDRESS = "http://127.0.0.1:8000/api/"
+
 
 class Core:
     ''' encapsulate all functionality into one class '''
 
     def __init__(self):
         self.auth = HTTPBasicAuth(AUTH["username"], AUTH["password"])
-
 
     def exist(self, endpoint: str, record_id: int) -> bool:
         ''' recive table name and id and return if the record is exist in db '''

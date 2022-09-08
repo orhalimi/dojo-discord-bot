@@ -1,10 +1,10 @@
 """ this file used as a main feature of django, we can register views for specific urls """
+from asyncio import events
 import datetime
 from django.shortcuts import render
-from .models import Message, Room,Profile
+from .models import Message, Room, Profile, Summary, Event
 from django.utils import timezone
 import pytz
-
 
 
 def dashboard(request):
@@ -13,7 +13,8 @@ def dashboard(request):
     date: str = request.GET.get("from_date")
     all_rooms = Room.objects.all().order_by("-created_at")
     all_messages = Message.objects.all().order_by("created_at")
-    profiles = Profile.objects.all()
+    all_summaries = Summary.objects.all().order_by("created_at")
+    all_events = Event.objects.all().order_by("created_at")
 
     if date != None:
         c_date: object = datetime.datetime.now(tz=pytz.UTC)
@@ -23,6 +24,6 @@ def dashboard(request):
             created_at__range=[date, c_date_format]
         ).order_by("created_at")
 
-
-    context = {"messages": all_messages, "rooms": all_rooms}
+    context = {"messages": all_messages, "rooms": all_rooms,
+               "summaries": all_summaries, "events": all_events}
     return render(request, "dashboard.html", context)

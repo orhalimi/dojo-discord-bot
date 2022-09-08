@@ -19,7 +19,8 @@ class DiscordBot(commands.Bot):
         logging.basicConfig(filename=LOG_PWD, level=logging.DEBUG, format=LOG_FMT)
         self.core = Core()
         intents = discord.Intents.all()
-        commands.Bot.__init__(self, command_prefix="!", intents=intents, case_insensitive=True)
+        commands.Bot.__init__(self, command_prefix="!",
+                              intents=intents, case_insensitive=True)
         self.add_commands()
 
     async def on_ready(self) -> None:
@@ -36,7 +37,7 @@ class DiscordBot(commands.Bot):
             await ctx.send("You do not have the correct role for this command.")
 
     async def on_message(self, ctx) -> None:
-     
+
         if not ctx.content.startswith("!"):
             content = ctx.content
 
