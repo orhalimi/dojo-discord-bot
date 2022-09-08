@@ -27,7 +27,7 @@ class RoomSerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields = ['id', 'discord_name', 'real_name', 'phone_number']
+        fields = ['id', 'discord_name','real_name','phone_number','subscribed']
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
@@ -52,3 +52,6 @@ class SummarySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Summary
         fields = ['created_at', 'id', 'content', 'profile', 'room']
+
+
+

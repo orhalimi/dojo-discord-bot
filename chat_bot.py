@@ -1,12 +1,15 @@
 ''' chat bot  '''
 
+from dataclasses import dataclass
+from urllib.parse import uses_relative
 import discord
 import argparse
 from discord.ext import commands
-from discord.utils import get
+from discord.utils import get, find
 from core import Core
 import logging
 import datetime
+import json
 
 ON_READY_MSG = "ChatBot is waking up!"
 LOG_PWD = "logs/bots/chat_bot.log"
@@ -128,7 +131,7 @@ class DiscordBot(commands.Bot):
                 channel = await guild.create_text_channel(
                     room_name, overwrites=overwrites
                 )
-                await channel.send(f"Welcome! This is an intro message!")
+                await channel.send(f"Please read this document to learn how the mentoring program works: https://docs.google.com/document/d/1Zl0ul8B_TrcOgWw2iielkcgeYXNLcepxfeMQEyco8o8/edit")
                 room_path = ADDRESS + "rooms/" + str(channel.id) + "/"
 
             room_data = {"id": channel.id}
@@ -139,6 +142,9 @@ class DiscordBot(commands.Bot):
                 profile_data = {
                     "id": members[index].id,
                     "discord_name": members[index].name,
+                    "real_name": None,
+                    "phone_number": None,
+                    "subscribed": True,
                 }
 
                 member_data = {
@@ -164,17 +170,35 @@ class DiscordBot(commands.Bot):
 
         @self.command(name="namephone")
         async def update_name_phone(ctx, *details: str) -> None:
+            print(details)
             member = ctx.author
-            print(member)
-            print(details[0])
-            new_details = {
-                "id": member.id,
-                "discord_name": member.name,
-                "real_name": details[0],
-                "phone_number": details[1],
-            }
-            if self.core.exist("profiles", member.id):
+            if details[0] == 'unsubscribe':
+                print('works')
+                new_details = {
+                    "id": member.id,
+                    "discord_name": member.name,
+                    "real_name": None,
+                    "phone_number": None,
+                    "subscribed": "false",
+                }
                 self.core.update("profiles", new_details, member.id)
+                print('works2')
+                await ctx.channel.send(f'Unsubscribed, You won\'t get this message again.')
+            elif len(details) != 2:
+                await ctx.channel.send('Incorrect data sent, please send 2 things after the !namephone command: first name and phone number. Example: !namephone myName 0505555555 ')
+            else:
+                new_details = {
+                    "id": member.id,
+                    "discord_name": member.name,
+                    "real_name": details[0],
+                    "phone_number": details[1],
+                    "subscribed": "true",
+                }
+                if self.core.exist("profiles", member.id):
+                    self.core.update("profiles", new_details, member.id)
+                    await ctx.channel.send(f'Thank you for updating your details {member.name}!')
+                else:
+                    await ctx.channel.send(f'{member.name} - There is no profiles registered with your details (discord ID etc) please contact the program admin to fix this.')
 
 
 if __name__ == '__main__':

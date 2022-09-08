@@ -5,6 +5,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 AUTH = {"username": "admin", "password": "admin4"}
+
 ADDRESS = "http://127.0.0.1:8000/api/"
 
 
