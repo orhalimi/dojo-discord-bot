@@ -6,7 +6,7 @@ from requests.auth import HTTPBasicAuth
 
 AUTH = {"username": "admin", "password": "admin4"}
 
-ADDRESS = "http://0.0.0.0:8000/api/"
+ADDRESS = "http://127.0.0.1:8000/api/"
 
 
 class Core:
@@ -36,7 +36,7 @@ class Core:
         print(f"POST: to {endpoint} status code:", response.status_code)
 
         if response.status_code == 400:
-            print(response.text)
+            print('post func failed')
 
         return response.ok
 
