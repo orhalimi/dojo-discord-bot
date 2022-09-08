@@ -33,6 +33,7 @@ class Core:
 
         url = f'{ADDRESS}{endpoint}/'
         response = requests.post(url, data=obj, auth=self.auth)
+        print(f'response: {response}')
         print(f"POST: to {endpoint} status code:", response.status_code)
 
         if response.status_code == 400:
