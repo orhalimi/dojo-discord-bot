@@ -6,7 +6,7 @@ from requests.auth import HTTPBasicAuth
 
 AUTH = {"username": "admin", "password": "admin4"}
 
-ADDRESS = "http://127.0.0.1:8000/api/"
+ADDRESS = "http://0.0.0.0:8000/api/"
 
 
 class Core:
