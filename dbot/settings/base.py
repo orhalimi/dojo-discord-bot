@@ -12,7 +12,7 @@ SITE_TITLE = "Discord Bot Dashboard"
 SITE_HEADER = "Discord Bot Dashboard"
 INDEX_TITLE = "index_title"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dojomentorbot.sarafconsulting.com', '46.101.46.130']
 
 IP_ADDRESS = "dojomentorbot.sarafconsulting.com"
 
