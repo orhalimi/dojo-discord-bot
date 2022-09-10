@@ -3,7 +3,7 @@ from .base import *
 '''Production setting file, assigned in main function'''
 
 DEBUG = False
-ALLOWED_HOSTS = [ IP_ADDRESS ]
+ALLOWED_HOSTS += [IP_ADDRESS]
 
 # Database
 
