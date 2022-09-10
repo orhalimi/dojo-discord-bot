@@ -103,7 +103,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join('/home/bot/dojobot/webapp/'),
+    os.path.join(BASE_DIR, '/webapp/static/'),
 ]
 
 # Default primary key field type
