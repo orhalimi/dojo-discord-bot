@@ -4,7 +4,8 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['46.101.46.130', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['46.101.46.130', 'localhost',
+                 '0.0.0.0', 'dojomentorbot.sarafconsulting.com']
 
 # Database
 
