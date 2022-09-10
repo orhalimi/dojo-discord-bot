@@ -14,7 +14,7 @@ INDEX_TITLE = "index_title"
 
 ALLOWED_HOSTS = []
 
-IP_ADDRESS = "46.101.46.130"
+IP_ADDRESS = ""
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
