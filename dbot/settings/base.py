@@ -104,7 +104,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = '/home/bot/dojobot/webapp/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '/home/bot/dojobot/webapp/static/'),
 ]
 
 # Default primary key field type
