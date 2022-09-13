@@ -105,8 +105,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'collectedstatic')
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static', 'css')
-                    ]
+STATICFILES_DIRS = []
 
 
 # Default primary key field type
