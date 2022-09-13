@@ -15,6 +15,8 @@ DATABASES = {
     }
 }
 
+ROOT_URLCONF = 'dbot.urls'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
