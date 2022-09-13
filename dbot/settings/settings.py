@@ -15,7 +15,7 @@ DATABASES = {
     }
 }
 
-ROOT_URLCONF = 'dbot.urls'
+ROOT_URLCONF = '~/dojobot/dbot.urls'
 
 LOGGING = {
     'version': 1,
