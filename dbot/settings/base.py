@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import sys
-
+from django.conf import settings
 from dotenv import load_dotenv, find_dotenv
 
 # python manage.py runserver --settings=dbot.settings.production
@@ -12,7 +12,7 @@ SITE_TITLE = "Discord Bot Dashboard"
 SITE_HEADER = "Discord Bot Dashboard"
 INDEX_TITLE = "index_title"
 
-ALLOWED_HOSTS = ['dojomentorbot.sarafconsulting.com', '46.101.46.130']
+ALLOWED_HOSTS = ['dojomentorbot.sarafconsulting.com', '46.101.46.130', '127.0.0.1']
 
 IP_ADDRESS = "dojomentorbot.sarafconsulting.com"
 
@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(find_dotenv())
 SECRET_KEY = os.environ['SECRET_KEY']
 
+settings.configure(
+    ROOT_URLCONF='dbot.urls'
+)
 
 # Application definition
 INSTALLED_APPS = [
@@ -46,7 +49,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'dbot.urls'
 
 TEMPLATES = [
     {
@@ -101,11 +103,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOL = None
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'webapp', 'static'),
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static', 'css')
+                    ]
 
 
 # Default primary key field type
