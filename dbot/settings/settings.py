@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(find_dotenv())
 SECRET_KEY = os.environ['SECRET_KEY']
 
-settings.configure(
-    ROOT_URLCONF='dbot.urls'
-)
+
+ROOT_URLCONF = 'dbot.urls'
+
 
 # Application definition
 INSTALLED_APPS = [
