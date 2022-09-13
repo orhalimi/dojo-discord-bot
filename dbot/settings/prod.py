@@ -1,4 +1,4 @@
-from .base import *
+from .settings import *
 
 '''Production setting file, assigned in main function'''
 
