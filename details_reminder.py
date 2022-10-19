@@ -1,6 +1,7 @@
 ''' details reminder is a function that activates once a week to remind members of the dojo to register their information so the admin can easily contact them if'''
 
 import argparse
+import sys
 import logging
 import json
 import discord
@@ -40,6 +41,7 @@ class phoneReminder(commands.Bot):
                     user_id = m['id']
                     member = discord.utils.find(lambda m: m.id == user_id, members)
                     await member.send('This is a reminder to please update your details in the Dojo DB, to do so use the command: !namephone followed by your first name and phone number (here or in your private mentoring room) Example: !namephone FirstName 0505555555, If you do not wish to see this message again you can reply with "!namephone unsubscribe" and you will not be contacted about this again')
+        return sys.exit(0)
 
     async def on_ready(self) -> None:
         ''' this function recive an room id and just sent an message about upcoming event '''
