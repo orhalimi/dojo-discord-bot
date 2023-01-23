@@ -32,8 +32,7 @@ class phoneReminder(commands.Bot):
     async def remind_name_phone(self) -> None:
         '''this function checks which of the current users in our DB did not register private details and sends them a PM reminding them to do so'''
         guild = self.guilds[0]
-        data = self.core.get('profiles/')
-        profiles = json.loads(data.text)
+        profiles = self.core.get('profiles/')
         members = guild.members
         for m in profiles:
             if m['subscribed']:

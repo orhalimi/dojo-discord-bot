@@ -51,8 +51,9 @@ class Core:
             print(response.text)
         return response.ok
 
-    def get(self, endpoint) -> requests.Response:
+    def get(self, endpoint) -> dict:
         ''' return the fully response for now! '''
         url = f'{ADDRESS}{endpoint}'
         response = requests.get(url)
-        return response
+        response.raise_for_status()
+        return response.json()
