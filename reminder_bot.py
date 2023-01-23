@@ -55,7 +55,6 @@ class ReminderBot(commands.Bot):
                     f"{index}, room:{event_room_id} be notify at {event_date.hour}:{event_minute}")
                 if today_time.hour == event_date.hour and today_time.minute == event_minute:
                     await self.sent_reminder(int(event_room_id))
-        return sys.exit(0)
 
     async def sent_reminder(self, room_id: int):
         ''' this function recive an room id and just sent an message about upcoming event '''
@@ -85,3 +84,4 @@ class ReminderBot(commands.Bot):
         logging.debug(ON_READY_MSG)
         await self.remind_name_phone()
         await self.search_events()
+        return sys.exit(0)
